@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from typing import List
-from schemas.schemas import  contactquery, donation, prayerrequest
-from models.model import ContactQuery, Donation, PrayerRequest
+from schemas.schemas import  contactquery, donation, prayerrequest, livestreamurl
+from models.model import ContactQuery, Donation, PrayerRequest, LiveStreamUrl
 from sqlalchemy.orm import Session
 from init_db import get_db
 
@@ -12,22 +12,15 @@ router = APIRouter()
 #    person = db.query(Personinfo).all()
 #    return person
 
-#@router.get("/country", response_model=List[person])
-#async def get_all_countries(db: Session = Depends(get_db)):
-#    person = db.query(country).all()
-##    return person
+@router.get("/livestreamurl", response_model=List[livestreamurl])
+async def get_all_livestream_urls(db: Session = Depends(get_db)):
+    livestream_urls = db.query(LiveStreamUrl).all()
+    return livestream_urls
 
 
 @router.post("/contactquery", response_model=contactquery)
-def create_contact_query(p: contactquery, db: Session = Depends(get_db)):
-    import uuid
-    contactquery = ContactQuery(
-    id = p.id,
-    first_name = p.first_name,
-    email=p.email,
-    phone_number =p.phone_number,
-    subject=p.subject,
-    message = p.message )
+def create_contact_query(p: dict, db: Session = Depends(get_db)):
+    contactquery = ContactQuery(**p)
 
     db.add(contactquery)
     db.commit()
@@ -35,43 +28,24 @@ def create_contact_query(p: contactquery, db: Session = Depends(get_db)):
     return contactquery
 
 @router.post("/donation", response_model=donation)
-def create_donation(p: donation, db: Session = Depends(get_db)):
-    import uuid
-    donation = Donation(
-    id = p.id,
-    first_name = p.first_name,
-    last_name = p.last_name,
-    email=p.email,
-    phone_number =p.phone_number,
-    address = p.address,
-    country =p.country,
-    amount = p.amount,
-    reference=p.reference,
-    message = p.message )
+def create_donation(p: dict, db: Session = Depends(get_db)):
+    donation = Donation(**p)
 
-    db.add(contactquery)
+    db.add(donation)
     db.commit()
-    db.refresh(contactquery)
-    return contactquery
+    db.refresh(donation)
+    return donation
 
 
 @router.post("/prayerrequest", response_model=prayerrequest)
-def create_prayer_request(p: prayerrequest, db: Session = Depends(get_db)):
-    import uuid
-    prayerrequest = PrayerRequest(
-    id = p.id,
-    first_name = p.first_name,
-    last_name = p.last_name,
-    email=p.email,
-    phone_number =p.phone_number,
-    address = p.address,
-    country =p.country,
-    message = p.message )
-
+def create_prayer_request(p: dict, db: Session = Depends(get_db)):
+    print(p)
+    prayerrequest = PrayerRequest(**p)
     db.add(prayerrequest)
     db.commit()
     db.refresh(prayerrequest)
     return prayerrequest
+
 
 #@router.put("/person/{id}", response_model=person)
 #def update_person(id: int, p: person, db: Session = Depends(get_db)):

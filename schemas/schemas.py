@@ -43,3 +43,6 @@ class prayerrequest(BaseModel):
     class Config:
         from_attributes = True
 
+class livestreamurl(BaseModel):
+    id:int
+    url :str

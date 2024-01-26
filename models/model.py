@@ -6,7 +6,7 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 
 class ContactQuery(Base):
     __tablename__ = "contactquery"
-    id = mapped_column(BigInteger, primary_key=True)
+    id = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     first_name = mapped_column(String(100), nullable=False)
     email=mapped_column(String(100), nullable=False)
     phone_number =mapped_column(String(100), nullable=False)
@@ -16,7 +16,7 @@ class ContactQuery(Base):
 
 class Donation(Base):
     __tablename__ = "donation"
-    id = mapped_column(BigInteger, primary_key=True)
+    id = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     first_name = mapped_column(String(100), nullable=False)
     last_name = mapped_column(String(100), nullable=False)
     email=mapped_column(String(100), nullable=False)
@@ -30,7 +30,7 @@ class Donation(Base):
 
 class PrayerRequest(Base):
     __tablename__ = "prayerrequest"
-    id = mapped_column(BigInteger, primary_key=True)
+    id = mapped_column(BigInteger, primary_key=True, autoincrement=True)
     first_name = mapped_column(String(100), nullable=False)
     last_name = mapped_column(String(100), nullable=False)
     email=mapped_column(String(100), nullable=False)
@@ -38,4 +38,9 @@ class PrayerRequest(Base):
     address = mapped_column(String(250), nullable=False)
     country =mapped_column(String(100), nullable=False)
     message = mapped_column(String(250), nullable=True)
+
+class LiveStreamUrl(Base):
+    __tablename__ = "livestreamurl"
+    id = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    url = mapped_column(String(300), nullable=False)
 
